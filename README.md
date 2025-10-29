@@ -90,31 +90,150 @@ Proyecto integral de ingeniería de datos que implementa un pipeline completo de
 
 ---
 
+## 📊 Origen de Datos
+
+### Fuente de Datos
+
+Este proyecto utiliza el **Sample Movie Database** de [DatabaseStar](https://www.databasestar.com/sample-database-movies/), una base de datos relacional de acceso público diseñada específicamente para el manejo de información cinematográfica.
+
+**Características del Dataset**:
+- **~4,800 películas** con información detallada
+- **104,000+ registros** de elenco y equipo técnico (cast & crew)
+- **Metadatos completos**: idiomas, géneros, palabras clave, países de producción
+- **Período cubierto**: Películas desde 1916 hasta 2017
+- **Formato original**: Scripts SQL para MySQL, PostgreSQL, Oracle, SQL Server, SQLite
+
+### Transformación de Datos
+
+Para este proyecto, los datos originales SQL fueron **transformados y distribuidos** en múltiples formatos para simular un entorno real de ingeniería de datos:
+
+**Formatos implementados**:
+- ✅ **CSV** → Archivos delimitados (movies, languages, genres)
+- ✅ **JSON Single-line** → Archivos JSON de una línea (countries, production_company)
+- ✅ **JSON Multi-line** → Archivos JSON con múltiples líneas (movie_cast, language_role)
+- ✅ **Datos particionados** → Archivos organizados por fecha para simular cargas incrementales
+
+**Tablas procesadas**: 12 de las 17 tablas originales
+- `movie`, `language`, `genre`, `country`, `person`
+- `movie_genre`, `movie_cast`, `movie_languages`, `language_role`
+- `production_company`, `movie_company`, `production_country`
+
+**Repositorio oficial**: [GitHub - db-samples/movies](https://github.com/bbrumm/databasestar/tree/main/sample_databases/sample_db_movies)
+
+---
+
 ## 📊 Modelo de Datos
+
+### Diagrama Entidad-Relación
+
+El modelo de datos implementa un **esquema relacional normalizado** con 12 entidades principales y sus relaciones:
+
+```
+                    ┌─────────────┐
+                    │   MOVIE     │ (Entidad Central)
+                    │ ─────────── │
+                    │ movie_id PK │
+                    │ title       │
+                    │ budget      │
+                    │ revenue     │
+                    │ duration    │
+                    │ release_date│
+                    └──────┬──────┘
+                           │
+        ┌──────────────────┼──────────────────┐
+        │                  │                  │
+   ┌────▼─────┐      ┌────▼─────┐      ┌────▼─────┐
+   │  GENRE   │      │ LANGUAGE │      │ COUNTRY  │
+   │ (18)     │      │  (45)    │      │  (23)    │
+   └────┬─────┘      └────┬─────┘      └────┬─────┘
+        │                  │                  │
+   ┌────▼──────────┐ ┌────▼──────────┐ ┌────▼──────────┐
+   │ MOVIE_GENRE   │ │MOVIE_LANGUAGES│ │PRODUCTION_    │
+   │ (Bridge)      │ │  (Bridge)     │ │COUNTRY(Bridge)│
+   └───────────────┘ └───────────────┘ └───────────────┘
+
+        ┌─────────────────────────────────┐
+        │                                 │
+   ┌────▼─────┐                     ┌────▼─────┐
+   │  PERSON  │                     │ COMPANY  │
+   │ (14K)    │                     │  (~500)  │
+   └────┬─────┘                     └────┬─────┘
+        │                                 │
+   ┌────▼──────────┐               ┌────▼──────────┐
+   │ MOVIE_CAST    │               │MOVIE_COMPANY  │
+   │ (104K)        │               │  (Bridge)     │
+   └───────────────┘               └───────────────┘
+```
 
 ### Entidades Principales
 
-#### Dimensionales
-- **Movies**: Información de películas (título, presupuesto, ingresos, duración, votos)
-- **Languages**: Idiomas de las películas
-- **Genres**: Géneros cinematográficos
-- **Countries**: Países de producción
-- **Production Companies**: Compañías productoras
-- **Persons**: Actores y personal de producción
+#### Tablas Dimensionales (Catálogos)
 
-#### Relacionales (Bridge Tables)
-- **Movie_Genres**: Relación muchos-a-muchos entre películas y géneros
-- **Movie_Languages**: Idiomas asociados a cada película
-- **Movie_Cast**: Cast de actores por película
-- **Movie_Companies**: Compañías productoras por película
-- **Production_Country**: Países de producción por película
+| Tabla | Registros | Descripción | Campos Clave |
+|-------|-----------|-------------|--------------|
+| **movies** | ~4,800 | Información principal de películas | movie_id, title, budget, revenue, duration, release_date, vote_average |
+| **languages** | 45 | Catálogo de idiomas | language_id, language_code, language_name |
+| **genres** | 18 | Géneros cinematográficos | genre_id, genre_name |
+| **countries** | 23 | Países de producción | country_id, country_iso_code, country_name |
+| **production_companies** | ~500 | Estudios y compañías productoras | company_id, company_name |
+| **persons** | ~14,000 | Actores y equipo técnico | person_id, person_name (forename, surname) |
 
-### Esquema de Datos
+#### Tablas Relacionales (Bridge Tables)
+
+| Tabla | Tipo | Descripción | Cardinalidad |
+|-------|------|-------------|--------------|
+| **movie_genres** | M:M | Relación película-género | Una película puede tener múltiples géneros |
+| **movie_languages** | M:M | Idiomas por película | Películas multilingües |
+| **movie_cast** | M:M | Elenco de actores | 104,000+ registros cast-película |
+| **movie_companies** | M:M | Compañías productoras por película | Co-producciones |
+| **production_country** | M:M | Países de producción por película | Producciones internacionales |
+| **language_role** | M:M | Roles de idioma en películas | Idioma original vs doblajes |
+
+### Características del Modelo
+
+**Normalización**:
+- ✅ **3ra Forma Normal (3NF)** para eliminar redundancias
+- ✅ **Integridad referencial** mediante foreign keys
+- ✅ **Separación de concerns**: Entidades independientes con relaciones claras
+
+**Complejidad de Datos**:
+- ✅ **Estructuras anidadas**: JSON con objetos complejos (person_name: {forename, surname})
+- ✅ **Relaciones muchos-a-muchos**: Múltiples géneros, idiomas, compañías por película
+- ✅ **Datos temporales**: Particionamiento por fecha de carga
+
+**Volumen de Datos**:
+- **Entidades principales**: ~20,000 registros únicos
+- **Relaciones**: ~130,000+ combinaciones
+- **Capa Gold**: 48,000+ registros agregados y analytics-ready
+
+### Esquema de Datos Original
+
+**Nota**: El diagrama ER adjunto muestra el modelo relacional completo con las 17 tablas originales. Para este proyecto se utilizaron 12 tablas, transformadas a formatos CSV y JSON para simular múltiples fuentes de datos en un entorno enterprise real.
+
+**Referencia**: [Ver diagrama completo](https://www.databasestar.com/sample-database-movies/)
+
+---
+
+### Decisiones de Diseño
+
+### Decisiones de Diseño
+
+**¿Por qué transformar SQL a CSV/JSON?**
+1. **Simular entornos reales**: En producción, los datos provienen de múltiples fuentes y formatos
+2. **Demostrar versatilidad**: Procesamiento de CSV, JSON single-line y multi-line
+3. **Complejidad técnica**: Manejo de diferentes esquemas y estructuras de datos
+4. **Casos de uso realistas**: Ingesta incremental con particionamiento por fecha
+
+**¿Por qué 12 tablas en lugar de 17?**
+- Enfoque en las entidades más relevantes para análisis de negocio
+- Reducción de complejidad sin perder valor analítico
+- Optimización del tiempo de desarrollo del pipeline
 
 **Total de registros procesados**:
-- Películas: ~4,500
+- Películas: ~4,500 (filtradas por año >= 2000 en capa Gold)
 - Relaciones género-idioma-película: 20,031 combinaciones
 - Compañías y países: 6,477 relaciones
+- Cast & Crew: ~104,000 registros originales
 
 ---
 
@@ -708,6 +827,28 @@ Este proyecto fue desarrollado como parte de mi portfolio profesional de ingenie
 - **Azure Databricks Documentation** por recursos educativos
 - **Delta Lake Community** por la excelente tecnología open-source
 - **Databricks Academy** por los cursos y certificaciones
+- **DatabaseStar** por proporcionar el dataset de películas de forma gratuita
+
+---
+
+## 📚 Recursos y Referencias
+
+### Dataset Original
+- **Sample Movie Database**: [DatabaseStar Movies](https://www.databasestar.com/sample-database-movies/)
+- **GitHub Repository**: [db-samples/movies](https://github.com/bbrumm/databasestar/tree/main/sample_databases/sample_db_movies) (Scripts SQL originales)
+- **Diagrama ER**: Disponible en la documentación de DatabaseStar
+- **Período de datos**: 1916 - 2017 (~4,800 películas)
+
+### Documentación Técnica
+- **Azure Databricks**: [docs.microsoft.com/azure/databricks](https://docs.microsoft.com/azure/databricks)
+- **Delta Lake**: [delta.io](https://delta.io)
+- **Apache Spark**: [spark.apache.org/docs](https://spark.apache.org/docs/latest/)
+- **PySpark API**: [spark.apache.org/docs/latest/api/python](https://spark.apache.org/docs/latest/api/python/)
+
+### Arquitectura y Best Practices
+- **Medallion Architecture**: [Databricks Medallion Architecture](https://www.databricks.com/glossary/medallion-architecture)
+- **Azure Well-Architected**: [Microsoft Azure Architecture](https://learn.microsoft.com/azure/architecture/)
+- **Data Engineering Patterns**: [Data Engineering on Azure](https://learn.microsoft.com/azure/architecture/data-guide/)
 
 ---
 
