@@ -128,7 +128,42 @@ Para este proyecto, los datos originales SQL fueron **transformados y distribuid
 
 El modelo de datos implementa un **esquema relacional normalizado** con 12 entidades principales y sus relaciones:
 
-<img width="1254" height="651" alt="image" src="https://github.com/user-attachments/assets/11cbe2b0-4fb5-4a48-b71a-ff12a079070a" />
+```
+                    ┌─────────────┐
+                    │   MOVIE     │ (Entidad Central)
+                    │ ─────────── │
+                    │ movie_id PK │
+                    │ title       │
+                    │ budget      │
+                    │ revenue     │
+                    │ duration    │
+                    │ release_date│
+                    └──────┬──────┘
+                           │
+        ┌──────────────────┼──────────────────┐
+        │                  │                  │
+   ┌────▼─────┐      ┌────▼─────┐      ┌────▼─────┐
+   │  GENRE   │      │ LANGUAGE │      │ COUNTRY  │
+   │ (18)     │      │  (45)    │      │  (23)    │
+   └────┬─────┘      └────┬─────┘      └────┬─────┘
+        │                  │                  │
+   ┌────▼──────────┐ ┌────▼──────────┐ ┌────▼──────────┐
+   │ MOVIE_GENRE   │ │MOVIE_LANGUAGES│ │PRODUCTION_    │
+   │ (Bridge)      │ │  (Bridge)     │ │COUNTRY(Bridge)│
+   └───────────────┘ └───────────────┘ └───────────────┘
+
+        ┌─────────────────────────────────┐
+        │                                 │
+   ┌────▼─────┐                     ┌────▼─────┐
+   │  PERSON  │                     │ COMPANY  │
+   │ (14K)    │                     │  (~500)  │
+   └────┬─────┘                     └────┬─────┘
+        │                                 │
+   ┌────▼──────────┐               ┌────▼──────────┐
+   │ MOVIE_CAST    │               │MOVIE_COMPANY  │
+   │ (104K)        │               │  (Bridge)     │
+   └───────────────┘               └───────────────┘
+```
 
 
 ### Entidades Principales
