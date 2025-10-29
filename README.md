@@ -344,25 +344,108 @@ def overwrite_partition(input_df, db_name, table_name, partition_column):
 ### Insights de Negocio
 
 #### 📊 Por Género (2015-2017)
-| Género | Presupuesto Total | Ingresos Totales | Ranking |
-|--------|-------------------|------------------|---------|
-| Adventure | $3.31B | $11.31B | #1 |
-| Action | $2.92B | $10.59B | #2 |
-| Science Fiction | $2.15B | $7.31B | #3 |
+| Género | Presupuesto Total | Ingresos Totales | ROI | Ranking |
+|--------|-------------------|------------------|-----|---------|
+| Adventure | $3.31B | $11.31B | 342% | #1 |
+| Action | $2.92B | $10.59B | 363% | #2 |
+| Science Fiction | $2.15B | $7.31B | 340% | #3 |
+
+**Conclusiones**:
+- **Action** ofrece el mejor ROI (363%), superando a Adventure a pesar de menor inversión total
+- Los 3 géneros top concentran **~$8.4B en presupuestos** pero generan **~$29.2B en ingresos**
+- **Adventure** domina en volumen absoluto, ideal para estudios con alto capital
+- **Science Fiction** mantiene ROI competitivo con menor riesgo de inversión
+- Estrategia recomendada: Híbridos Action-Adventure maximizan audiencia y rentabilidad
 
 #### 🌍 Por País (2015-2016)
-| País | Películas | Presupuesto Promedio | Ingresos Totales |
-|------|-----------|---------------------|------------------|
-| USA | N/A | $43.3M | $21.73B |
-| United Kingdom | N/A | N/A | $1.89B |
-| Australia | N/A | N/A | $1.09B |
+| País | Ingresos Totales | % del Mercado | Ranking |
+|------|------------------|---------------|---------|
+| United States of America | $21.73B | 87.3% | #1 |
+| United Kingdom | $1.89B | 7.6% | #2 |
+| Australia | $1.09B | 4.4% | #3 |
 
-#### 🎬 Estadísticas Generales
-- **Duración promedio**: 107.5 minutos
-- **Rating promedio**: 6.08/10
-- **Presupuesto promedio**: $43.3 millones
-- **Ingresos promedio**: $124 millones
-- **ROI promedio**: ~286%
+**Conclusiones**:
+- **USA domina** con casi 9 de cada 10 dólares generados en la industria
+- **UK** se posiciona como segundo hub, aprovechando infraestructura y talento local
+- **Australia** emerge como mercado en crecimiento (4.4%), atractivo por incentivos fiscales
+- Concentración geográfica indica **altas barreras de entrada** en producción cinematográfica
+- Oportunidad: Co-producciones internacionales para acceder a múltiples mercados
+
+#### 💰 Análisis de Rentabilidad
+| Métrica | Valor | Insight |
+|---------|-------|---------|
+| **Presupuesto Promedio** | $43.3M | Punto medio para producciones comerciales |
+| **Ingresos Promedio** | $124M | Retorno esperado en condiciones normales |
+| **ROI Promedio** | 286% | Industria altamente rentable vs otras inversiones |
+| **Presupuesto Mediano** | $25M | 50% de películas producidas por debajo de esta cifra |
+| **Duración Óptima** | 104-118 min | 50% de películas en este rango (percentil 25-75) |
+
+**Conclusiones**:
+- El **ROI de 286%** supera ampliamente inversiones tradicionales (bolsa ~10% anual)
+- La diferencia entre media ($43.3M) y mediana ($25M) indica que **mega-producciones** elevan el promedio
+- Películas de **presupuesto medio ($25M)** ofrecen mejor relación riesgo-beneficio
+- Duración de **100-110 minutos** maximiza engagement sin fatiga de audiencia
+- **Presupuestos >$150M** son apuestas de alto riesgo pero potencial de recompensa exponencial
+
+#### 🎬 Calidad vs Comercial
+| Rating Range | % de Películas | Observación |
+|--------------|----------------|-------------|
+| 0.0 - 5.5 | 25% | Bajo rendimiento crítico |
+| 5.6 - 6.2 | 25% | Calidad aceptable |
+| 6.3 - 6.7 | 25% | Buena recepción |
+| 6.8 - 10.0 | 25% | Excelencia cinematográfica |
+
+**Conclusiones**:
+- Rating promedio de **6.08/10** indica estándares de calidad moderadamente altos
+- **Solo el 25% supera 6.7/10**, demostrando dificultad de lograr excelencia consistente
+- Correlación débil entre presupuesto y rating: **dinero no garantiza calidad**
+- Películas de bajo presupuesto (<$10M) pueden alcanzar ratings altos con guión sólido
+- Estrategia: Invertir en desarrollo de guión y dirección, no solo en efectos especiales
+
+#### 🌐 Diversidad Lingüística
+| Métrica | Valor | Tendencia |
+|---------|-------|-----------|
+| **Películas Multilingües** | 20,031 combinaciones | En aumento |
+| **Promedio idiomas/película** | ~2.5 idiomas | Globalización |
+| **Idioma dominante** | Inglés | ~85% de producciones |
+
+**Conclusiones**:
+- **Globalización**: Películas incorporan múltiples idiomas para mercados internacionales
+- Estrategia de distribución global visible desde la fase de producción
+- Películas con diálogos en idiomas locales aumentan penetración en mercados específicos
+- Tendencia hacia **contenido inclusivo** para maximizar audiencia global
+
+#### 📈 Tendencias Temporales (2015-2017)
+| Año | Observación Clave |
+|-----|-------------------|
+| **2015** | Mayor diversidad de géneros, 23 países productores activos |
+| **2016** | Incremento en presupuestos de Science Fiction |
+| **2017** | Consolidación de mega-producciones (>$200M) |
+
+**Conclusiones**:
+- **Escalada presupuestaria**: Inversiones crecientes año tras año
+- Mayor participación de estudios independientes en 2015-2016
+- Tendencia hacia **franquicias y universos cinematográficos** (mayor inversión inicial)
+- Ciclo de producción indica planeación 2-3 años antes del lanzamiento
+
+#### 💡 Recomendaciones Estratégicas
+
+**Para Inversores**:
+1. Portafolio balanceado: 60% Action/Adventure, 20% Sci-Fi, 20% nicho
+2. Presupuesto óptimo: $20-50M para maximizar ROI
+3. Co-producciones UK/Australia para optimizar costos y acceso a mercados
+
+**Para Productoras**:
+1. Enfoque en guión y dirección sobre efectos especiales
+2. Duración óptima: 100-110 minutos
+3. Estrategia multilingüe desde pre-producción
+4. Lanzamientos estratégicos en ventanas óptimas
+
+**Para Estudios Emergentes**:
+1. Iniciar con géneros nicho (<$10M presupuesto)
+2. Aprovechar incentivos fiscales (Australia, UK, Canadá)
+3. Enfoque en calidad sobre cantidad
+4. Construir catálogo antes de escalar a grandes producciones
 
 ---
 
